@@ -1,7 +1,7 @@
 import { defineEventHandler, getQuery } from 'h3'
 
 export default defineEventHandler(async (event) => {
-  const { page = 1 } = getQuery(event)
+  const { page = 1, searchQuery = '', selectedType = '' } = getQuery(event)
   const limit = 30
   const offset = (Number(page) - 1) * limit
 
@@ -13,8 +13,11 @@ export default defineEventHandler(async (event) => {
       },
       body: JSON.stringify({
         query: `
-          query getPokemons($offset: Int, $limit: Int) {
-            pokemon_v2_pokemon(offset: $offset, limit: $limit) {
+          query getPokemons($offset: Int, $limit: Int, $searchQuery: String, $selectedType: String) {
+            pokemon_v2_pokemon(offset: $offset, limit: $limit, where: {
+              name: {_ilike: $searchQuery},
+              pokemon_v2_pokemontypes: {pokemon_v2_type: {name: {_ilike: $selectedType}}}
+            }) {
               id
               name
               base_experience
@@ -48,6 +51,8 @@ export default defineEventHandler(async (event) => {
         variables: {
           offset,
           limit,
+          searchQuery: `%${searchQuery}%`,
+          selectedType: selectedType ? `%${selectedType}%` : '%%',
         },
       }),
     })

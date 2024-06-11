@@ -64,7 +64,7 @@ const totalStats = computed(() => {
           {{ pokemon.name }}
         </h2>
         <div>
-          <p>Types: {{ pokemon.pokemon_v2_pokemontypes.map(type => type.pokemon_v2_type.name).join(', ') }}</p>
+          <p>{{ pokemon.pokemon_v2_pokemontypes.map(type => type.pokemon_v2_type.name).join(', ') }}</p>
         </div>
       </div>
     </template>
