@@ -61,9 +61,9 @@ export default defineNuxtConfig({
     },
   },
   site: {
+    url: 'https://pokemonuxt.vercel.app/' || 'http://localhost:3000',
     name: 'Pokemon Nuxt',
     description: 'Welcome to Pokemon Nuxt Web App ',
     defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
-    url: 'https://pokemonuxt.vercel.app/' || 'http://localhost:3000',
   },
 })

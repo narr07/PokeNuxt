@@ -149,11 +149,11 @@ function clearSearchQuery() {
     <UContainer class="py-10">
       <div class="py-10 w-full">
         <h1 class="text-3xl font-black text-center">
-          Pokémon List
+          Pokémon List  ({{ pokemons.length }}) all generations
         </h1>
       </div>
       <div class="mb-4" />
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id" :pokemon="pokemon" />
         <template v-if="pending">
           <div v-for="n in 6" :key="n" class="flex flex-col space-y-2">
