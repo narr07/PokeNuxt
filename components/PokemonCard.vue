@@ -59,23 +59,26 @@ const totalStats = computed(() => {
 <template>
   <UCard>
     <template #header>
-      <div class="flex flex-col">
-        <h2 class="font-bold capitalize text-center">
+      <div class="flex flex-col items-center">
+        <h2 class="font-bold uppercase text-center">
           {{ pokemon.name }}
         </h2>
         <div>
-          <p>{{ pokemon.pokemon_v2_pokemontypes.map(type => type.pokemon_v2_type.name).join(', ') }}</p>
+          <p class="capitalize">
+            {{ pokemon.pokemon_v2_pokemontypes.map(type => type.pokemon_v2_type.name).join(', ') }}
+          </p>
         </div>
       </div>
     </template>
-    <NuxtImg v-if="spriteUrl" :src="spriteUrl" :alt="pokemon.name" />
-    <p v-else>
-      No Image Available
-    </p>
+    <div class="items-center flex justify-center">
+      <NuxtImg v-if="spriteUrl" :src="spriteUrl" :alt="pokemon.name" />
+      <div v-else>
+        <USkeleton class="w-40 h-40" />
+      </div>
+    </div>
 
     <p>Base Experience: {{ pokemon.base_experience }}</p>
 
-    <p>Abilities: {{ pokemon.pokemon_v2_pokemonabilities.map(ability => ability.pokemon_v2_ability.name).join(', ') }}</p>
     <p>Stats:</p>
     <ul>
       <li v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
@@ -83,5 +86,6 @@ const totalStats = computed(() => {
       </li>
     </ul>
     <p>Total Stats: {{ totalStats }}</p>
+    <p>Abilities: {{ pokemon.pokemon_v2_pokemonabilities.map(ability => ability.pokemon_v2_ability.name).join(', ') }}</p>
   </UCard>
 </template>

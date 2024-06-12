@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import PokemonCard from '@/components/PokemonCard.vue'
 
 interface PokemonType {
@@ -24,6 +24,32 @@ const pending = ref(false)
 const error = ref<any>(null)
 const searchQuery = ref('')
 const selectedType = ref('')
+
+const types = [
+  '',
+  'Normal',
+  'Fire',
+  'Water',
+  'Electric',
+  'Grass',
+  'Ice',
+  'Fighting',
+  'Poison',
+  'Ground',
+  'Flying',
+  'Psychic',
+  'Bug',
+  'Rock',
+  'Ghost',
+  'Dragon',
+  'Dark',
+  'Steel',
+  'Fairy',
+]
+
+const displaySelectedType = computed(() => {
+  return selectedType.value === '' ? 'All Types' : selectedType.value
+})
 
 async function loadPokemons(reset = false) {
   pending.value = true
@@ -75,78 +101,67 @@ onMounted(() => {
 </script>
 
 <template>
-  <UContainer>
-    <h1>Pokémon List</h1>
-    <div class="mb-4">
-      <input v-model="searchQuery" type="text" placeholder="Search Pokémon" class="border p-2 mb-2">
-      <select v-model="selectedType" class="border p-2">
-        <option value="">
-          All Types
-        </option>
-        <option value="Normal">
-          Normal
-        </option>
-        <option value="Fire">
-          Fire
-        </option>
-        <option value="Water">
-          Water
-        </option>
-        <option value="Electric">
-          Electric
-        </option>
-        <option value="Grass">
-          Grass
-        </option>
-        <option value="Ice">
-          Ice
-        </option>
-        <option value="Fighting">
-          Fighting
-        </option>
-        <option value="Poison">
-          Poison
-        </option>
-        <option value="Ground">
-          Ground
-        </option>
-        <option value="Flying">
-          Flying
-        </option>
-        <option value="Psychic">
-          Psychic
-        </option>
-        <option value="Bug">
-          Bug
-        </option>
-        <option value="Rock">
-          Rock
-        </option>
-        <option value="Ghost">
-          Ghost
-        </option>
-        <option value="Dragon">
-          Dragon
-        </option>
-        <option value="Dark">
-          Dark
-        </option>
-        <option value="Steel">
-          Steel
-        </option>
-        <option value="Fairy">
-          Fairy
-        </option>
-      </select>
+  <div class="bgPage">
+    <nav class="fixed top-2 mx-auto w-full z-50">
+      <UContainer>
+        <UCard class="">
+          <div class="grid grid-cols-2 gap-4 ">
+            <div>
+              <UInput
+                v-model="searchQuery" type="text"
+                icon="i-heroicons-magnifying-glass-20-solid"
+                size="sm"
+                color="gray"
+              />
+            </div>
+            <div>
+              <USelectMenu v-model="selectedType" color="gray" :options="types" option-attribute="name">
+                <template #label>
+                  <span class="truncate">  {{ displaySelectedType }}</span>
+                </template>
+
+                <template #option="{ option: selectedType }">
+                  <span class="truncate">{{ selectedType === '' ? 'All Types' : selectedType }}</span>
+                </template>
+              </USelectMenu>
+            </div>
+          </div>
+        </UCard>
+      </UContainer>
+    </nav>
+    <UContainer class="py-10">
+      <div class="py-10">
+        <h1>Pokémon List</h1>
+      </div>
+      <div class="mb-4" />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id" :pokemon="pokemon" />
+        <template v-if="pending">
+          <div v-for="n in 6" :key="n" class="flex flex-col space-y-2">
+            <div class="flex flex-col items-center">
+              <USkeleton class="w-24 h-24 rounded-full" />
+              <div class="mt-2 text-center">
+                <USkeleton class="h-4 w-32" />
+                <USkeleton class="h-4 w-20 mt-1" />
+              </div>
+            </div>
+            <USkeleton class="h-4 w-full mt-2" />
+            <USkeleton class="h-4 w-full" />
+            <USkeleton class="h-4 w-full mt-2" />
+            <div class="flex flex-col space-y-1">
+              <USkeleton class="h-4 w-full" />
+              <USkeleton class="h-4 w-full" />
+              <USkeleton class="h-4 w-full" />
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="py-10 justify-center flex max-w-6xl mx-auto">
+        <UButton v-if="!pending && page < lastPage" label="  Load More" @click="loadMore" />
+      </div>
+    </UContainer>
+    <div class="fixed bottom-2 left-2 z-50">
+      <ColorMode />
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-6 gap-2">
-      <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id" :pokemon="pokemon" />
-    </div>
-    <div v-if="pending">
-      Loading...
-    </div>
-    <button v-if="!pending && page < lastPage" @click="loadMore">
-      Load More
-    </button>
-  </UContainer>
+  </div>
 </template>
