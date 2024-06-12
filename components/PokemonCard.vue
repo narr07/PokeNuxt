@@ -1,5 +1,36 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+// import SvgoHp from '~/assets/icon-hp.svg'
+// import SvgoAttack from '~/assets/icon-attack.svg'
+// import SvgoDefense from '~/assets/icon-defend.svg'
+// import SvgoSpecialAttack from '~/assets/icon-special-attack.svg'
+// import SvgoSpecialDefense from '~/assets/icon-special-defend.svg'
+// import SvgoSpeed from '~/assets/icon-speed.svg'
+import SvgoHp from '@/assets/icons/hp.svg'
+import SvgoAttack from '@/assets/icons/attack.svg'
+import SvgoDefense from '@/assets/icons/defend.svg'
+import SvgoSpecialAttack from '@/assets/icons/special-attack.svg'
+import SvgoSpecialDefense from '@/assets/icons/special-defend.svg'
+import SvgoSpeed from '@/assets/icons/speed.svg'
+
+import SvgoBug from '@/assets/icons/bug.svg'
+import SvgoDark from '@/assets/icons/dark.svg'
+import SvgoDragon from '@/assets/icons/dragon.svg'
+import SvgoElectric from '@/assets/icons/electric.svg'
+import SvgoFairy from '@/assets/icons/fairy.svg'
+import SvgoFight from '@/assets/icons/fight.svg'
+import SvgoFire from '@/assets/icons/fire.svg'
+import SvgoFlying from '@/assets/icons/flying.svg'
+import SvgoGhost from '@/assets/icons/ghost.svg'
+import SvgoGrass from '@/assets/icons/grass.svg'
+import SvgoGround from '@/assets/icons/ground.svg'
+import SvgoIce from '@/assets/icons/ice.svg'
+import SvgoNormal from '@/assets/icons/normal.svg'
+import SvgoPoison from '@/assets/icons/poison.svg'
+import SvgoPsychic from '@/assets/icons/psychic.svg'
+import SvgoRock from '@/assets/icons/rock.svg'
+import SvgoSteel from '@/assets/icons/steel.svg'
+import SvgoWater from '@/assets/icons/water.svg'
 
 interface PokemonType {
   pokemon_v2_type: {
@@ -54,6 +85,35 @@ const spriteUrl = computed(() => {
 const totalStats = computed(() => {
   return props.pokemon.pokemon_v2_pokemonstats.reduce((sum, stat) => sum + stat.base_stat, 0)
 })
+
+const statIconMap: Record<string, any> = {
+  'hp': SvgoHp,
+  'attack': SvgoAttack,
+  'defense': SvgoDefense,
+  'special-attack': SvgoSpecialAttack,
+  'special-defense': SvgoSpecialDefense,
+  'speed': SvgoSpeed,
+}
+const typeIconMap: Record<string, any> = {
+  bug: SvgoBug,
+  dark: SvgoDark,
+  dragon: SvgoDragon,
+  electric: SvgoElectric,
+  fairy: SvgoFairy,
+  fighting: SvgoFight,
+  fire: SvgoFire,
+  flying: SvgoFlying,
+  ghost: SvgoGhost,
+  grass: SvgoGrass,
+  ground: SvgoGround,
+  ice: SvgoIce,
+  normal: SvgoNormal,
+  poison: SvgoPoison,
+  psychic: SvgoPsychic,
+  rock: SvgoRock,
+  steel: SvgoSteel,
+  water: SvgoWater,
+}
 </script>
 
 <template>
@@ -61,39 +121,80 @@ const totalStats = computed(() => {
     :ui="
       {
         base: 'hover:scale-[.98]  duration-150',
+        ring: 'ring-1 hover:ring-primary-300 ring-gray-200 dark:ring-primary-900',
+        rounded: 'rounded-lg ',
+        shadow: 'shadow hover:shadow-lg',
+        footer: {
+          padding: 'py-4',
+        },
+        body: {
+          padding: 'py-4',
+        },
       }"
   >
     <template #header>
-      <div class="flex flex-col items-center">
+      <div class="flex justify-between items-center">
         <h2 class="font-bold uppercase text-center">
           {{ pokemon.name }}
         </h2>
         <div>
-          <p class="capitalize">
-            {{ pokemon.pokemon_v2_pokemontypes.map(type => type.pokemon_v2_type.name).join(', ') }}
-          </p>
+          <div class="flex space-x-2">
+            <div v-for="type in pokemon.pokemon_v2_pokemontypes" :key="type.pokemon_v2_type.name">
+              <UTooltip :popper="{ arrow: true }" :text="type.pokemon_v2_type.name">
+                <UButton padded color="gray" variant="solid" square>
+                  <component :is="typeIconMap[type.pokemon_v2_type.name]" class="text-2xl " />
+                </UButton>
+              </UTooltip>
+            </div>
+          </div>
         </div>
       </div>
     </template>
     <div class="items-center relative flex justify-center">
-      <div class="absolute p-2 rounded shadow ring-1 ring-green-200 dark:ring-green-900 bg-primary-100 dark:bg-primary-950 aspect-square right-2  -bottom-6">
-        {{ pokemon.base_experience }} ⭐️
+      <div class="absolute p-1 rounded shadow ring-1 ring-yellow-200 dark:ring-yellow-900 bg-yellow-100 dark:bg-yellow-300 aspect-square right-0  -top-2">
+        <div class="flex items-center justify-center text-sm space-x-1 dark:text-zinc-800">
+          <div>
+            {{ totalStats }}
+          </div>
+          <SvgoTotal class="text-xl " />
+        </div>
       </div>
-      <NuxtImg v-if="spriteUrl" :src="spriteUrl" :alt="pokemon.name" />
-      <div v-else>
-        <USkeleton class="w-40 h-40" />
+      <div class="flex absolute space-y-3 flex-col w-full justify-center">
+        <div v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
+          <UTooltip :popper="{ arrow: true }" :text="stat.pokemon_v2_stat.name">
+            <UChip size="xl" :text="stat.base_stat">
+              <UButton padded size="xs" color="gray" variant="solid" square>
+                <component :is="statIconMap[stat.pokemon_v2_stat.name]" class="text-xl " />
+              </UButton>
+            </UChip>
+          </UTooltip>
+        </div>
+      </div>
+      <div class="pt-6 pl-10">
+        <NuxtImg v-if="spriteUrl" :src="spriteUrl" :alt="pokemon.name" />
+        <div v-else>
+          <USkeleton class="w-60 h-60" />
+        </div>
       </div>
     </div>
 
     <template #footer>
-      <p>Stats:</p>
-      <ul>
-        <li v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
-          {{ stat.pokemon_v2_stat.name }}: {{ stat.base_stat }}
-        </li>
-      </ul>
-      <p>Total Stats: {{ totalStats }}</p>
-      <p>Abilities: {{ pokemon.pokemon_v2_pokemonabilities.map(ability => ability.pokemon_v2_ability.name).join(', ') }}</p>
+      <div
+
+        class="flex flex-wrap w-full justify-end space-x-2 "
+      >
+        <div
+          v-for="ability in pokemon.pokemon_v2_pokemonabilities"
+          :key="ability.pokemon_v2_ability.name"
+        >
+          <UBadge>
+            <span class="capitalize">
+
+              {{ ability.pokemon_v2_ability.name }}
+            </span>
+          </UBadge>
+        </div>
+      </div>
     </template>
   </UCard>
 </template>

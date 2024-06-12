@@ -106,53 +106,54 @@ function clearSearchQuery() {
 
 <template>
   <div class="bgPage">
-    <nav class="fixed top-2 mx-auto w-full z-50">
-      <UContainer>
-        <UCard
-          :ui="{
-            body: {
-              base: ' duration-150',
-              background: '',
-              padding: 'px-2 py-2 sm:p-3',
-            },
-          }"
-        >
-          <div class="grid grid-cols-2 gap-4 ">
-            <div>
-              <UButtonGroup size="sm" orientation="horizontal">
-                <UInput
-                  v-model="searchQuery" type="text"
-                  icon="i-heroicons-magnifying-glass-20-solid"
-                  size="sm"
-                  color="gray"
-                />
-                <UButton
-                  icon="i-heroicons-x-mark-16-solid" color="gray"
-                  @click="clearSearchQuery"
-                />
-              </UButtonGroup>
-            </div>
-            <div>
-              <USelectMenu v-model="selectedType" color="gray" :options="types" option-attribute="name">
-                <template #label>
-                  <span class="truncate">  {{ displaySelectedType }}</span>
-                </template>
-
-                <template #option="{ option: selectedType }">
-                  <span class="truncate">{{ selectedType === '' ? 'All Types' : selectedType }}</span>
-                </template>
-              </USelectMenu>
-            </div>
+    <nav class="fixed top-0 mx-auto w-full z-50">
+      <UCard
+        :ui="{
+          body: {
+            base: ' max-w-6xl mx-auto',
+            background: '',
+            padding: 'px-2 py-2 sm:p-3',
+          },
+          rounded: 'rounded-none',
+        }"
+      >
+        <div class="flex justify-between items-center   ">
+          <div>
+            <UButtonGroup size="sm" orientation="horizontal">
+              <UInput
+                v-model="searchQuery" type="text"
+                icon="i-heroicons-magnifying-glass-20-solid"
+                size="sm"
+                color="gray"
+              />
+              <UButton
+                icon="i-heroicons-x-mark-16-solid" color="gray"
+                @click="clearSearchQuery"
+              />
+            </UButtonGroup>
           </div>
-        </UCard>
-      </UContainer>
+          <div class="flex items-center pl-2 space-x-2">
+            <USelectMenu v-model="selectedType" color="gray" :options="types" option-attribute="name">
+              <template #label>
+                <span class="truncate">  {{ displaySelectedType }}</span>
+              </template>
+
+              <template #option="{ option: selectedType }">
+                <span class="truncate">{{ selectedType === '' ? 'All Types' : selectedType }}</span>
+              </template>
+            </USelectMenu> <ColorMode />
+          </div>
+        </div>
+      </UCard>
     </nav>
     <UContainer class="py-10">
-      <div class="py-10">
-        <h1>Pokémon List</h1>
+      <div class="py-10 w-full">
+        <h1 class="text-3xl font-black text-center">
+          Pokémon List
+        </h1>
       </div>
       <div class="mb-4" />
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id" :pokemon="pokemon" />
         <template v-if="pending">
           <div v-for="n in 6" :key="n" class="flex flex-col space-y-2">
@@ -178,8 +179,5 @@ function clearSearchQuery() {
         <UButton v-if="!pending && page < lastPage" label="  Load More" @click="loadMore" />
       </div>
     </UContainer>
-    <div class="fixed bottom-2 left-2 z-50">
-      <ColorMode />
-    </div>
   </div>
 </template>

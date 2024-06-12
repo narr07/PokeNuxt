@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     'nuxt-svgo',
     '@nuxt/fonts',
+    'nuxt-og-image',
   ],
   apollo: {
     clients: {
@@ -57,5 +58,11 @@ export default defineNuxtConfig({
           comp.global = 'sync'
       }
     },
+  },
+  site: {
+    name: 'Pokemon Nuxt',
+    description: 'Welcome to Pokemon Nuxt Web App ',
+    defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
+    url: 'https://pokemonuxt.vercel.app/' || 'http://localhost:3000',
   },
 })

@@ -16,6 +16,7 @@
     "@nuxt/image": "^1.7.0",
     "@nuxt/ui": "^2.16.0",
     "nuxt": "^3.12.1",
+    "nuxt-og-image": "^3.0.0-rc.53",
     "nuxt-svgo": "^4.0.1",
     "vue": "^3.4.27",
     "vue-router": "^4.3.3"
@@ -26,6 +27,8 @@
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
     "eslint": "9.4.0",
     "eslint-plugin-format": "^0.1.1",
-    "graphql": "^16.8.1"
+    "graphql": "^16.8.1",
+    "nuxt-site-config": "^2.2.12",
+    "nuxt-site-config-kit": "^2.2.12"
   }
 }
