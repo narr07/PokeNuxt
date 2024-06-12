@@ -30,7 +30,7 @@ export default <Partial<Config>>{
           900: '#85163a',
           950: '#4a071b',
         },
-        green: {
+        teal: {
           50: '#edfffc',
           100: '#c0fff6',
           200: '#81fff0',

@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     'nuxt-og-image',
   ],
+
   apollo: {
     clients: {
       default: {

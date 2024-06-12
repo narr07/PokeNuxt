@@ -105,7 +105,7 @@ function clearSearchQuery() {
 </script>
 
 <template>
-  <div class="bgPage">
+  <div class="bgCard">
     <nav class="fixed top-0 mx-auto w-full z-50">
       <UCard
         :ui="{

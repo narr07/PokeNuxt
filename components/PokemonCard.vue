@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-// import SvgoHp from '~/assets/icon-hp.svg'
-// import SvgoAttack from '~/assets/icon-attack.svg'
-// import SvgoDefense from '~/assets/icon-defend.svg'
-// import SvgoSpecialAttack from '~/assets/icon-special-attack.svg'
-// import SvgoSpecialDefense from '~/assets/icon-special-defend.svg'
-// import SvgoSpeed from '~/assets/icon-speed.svg'
+import { computed, ref } from 'vue'
 import SvgoHp from '@/assets/icons/hp.svg'
 import SvgoAttack from '@/assets/icons/attack.svg'
 import SvgoDefense from '@/assets/icons/defend.svg'
@@ -114,21 +108,45 @@ const typeIconMap: Record<string, any> = {
   steel: SvgoSteel,
   water: SvgoWater,
 }
+const colorMap: Record<string, string> = {
+  bug: 'green-500',
+  dark: 'gray-800',
+  dragon: 'indigo-400',
+  electric: 'yellow-400',
+  fairy: 'pink-400',
+  fighting: 'red-700',
+  fire: 'red-500',
+  flying: 'sky-300',
+  ghost: 'purple-700',
+  grass: 'green-400',
+  ground: 'yellow-800',
+  ice: 'cyan-300',
+  normal: 'gray-500',
+  poison: 'purple-500',
+  psychic: 'pink-500',
+  rock: 'yellow-700',
+  steel: 'gray-600',
+  water: 'blue-500',
+}
+
+const isLoaded = ref(false)
 </script>
 
 <template>
   <UCard
     :ui="
       {
-        base: 'hover:scale-[.98]  duration-150',
+        base: 'hover:scale-[.98]   duration-150',
         ring: 'ring-1 hover:ring-primary-300 ring-gray-200 dark:ring-primary-900',
         rounded: 'rounded-lg ',
         shadow: 'shadow hover:shadow-lg',
         footer: {
+
           padding: 'py-4',
         },
         body: {
           padding: 'py-4',
+          base: 'bgPage'
         },
       }"
   >
@@ -141,9 +159,10 @@ const typeIconMap: Record<string, any> = {
           <div class="flex space-x-2">
             <div v-for="type in pokemon.pokemon_v2_pokemontypes" :key="type.pokemon_v2_type.name">
               <UTooltip :popper="{ arrow: true }" :text="type.pokemon_v2_type.name">
-                <UButton padded color="gray" variant="solid" square>
-                  <component :is="typeIconMap[type.pokemon_v2_type.name]" class="text-2xl " />
-                </UButton>
+                <div class="flex items-center p-1 aspect-square w-8 h-8 ring-1 ring-gray-300 dark:ring-gray-800 justify-center  rounded" :class="[`bg-${colorMap[type.pokemon_v2_type.name]}`]">
+                  <component :is="typeIconMap[type.pokemon_v2_type.name]" v-if="isLoaded" class="text-2xl text-gray-950 inline-block" />
+                  <USkeleton v-else class="w-6 h-6" />
+                </div>
               </UTooltip>
             </div>
           </div>
@@ -151,48 +170,62 @@ const typeIconMap: Record<string, any> = {
       </div>
     </template>
     <div class="items-center relative flex justify-center">
-      <div class="absolute p-1 rounded shadow ring-1 ring-yellow-200 dark:ring-yellow-900 bg-yellow-100 dark:bg-yellow-300 aspect-square right-0  -top-2">
-        <div class="flex items-center justify-center text-sm space-x-1 dark:text-zinc-800">
+      <div class="absolute p-1 rounded shadow  bg-white aspect-square right-0  -top-2">
+        <div v-if="isLoaded" class="flex items-center justify-center text-sm space-x-1 dark:text-zinc-800">
           <div>
             {{ totalStats }}
           </div>
           <SvgoTotal class="text-xl " />
         </div>
+        <USkeleton v-else class="w-20 h-6" />
       </div>
       <div class="flex absolute space-y-3 flex-col w-full justify-center">
         <div v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
-          <UTooltip :popper="{ arrow: true }" :text="stat.pokemon_v2_stat.name">
+          <UTooltip v-if="isLoaded" :popper="{ arrow: true }" :text="stat.pokemon_v2_stat.name">
             <UChip size="xl" :text="stat.base_stat">
               <UButton padded size="xs" color="gray" variant="solid" square>
-                <component :is="statIconMap[stat.pokemon_v2_stat.name]" class="text-xl " />
+                <component :is="statIconMap[stat.pokemon_v2_stat.name]" v-if="isLoaded" class="text-xl " />
+                <USkeleton v-else class="w-6 h-6" />
               </UButton>
             </UChip>
           </UTooltip>
+          <USkeleton v-else class="w-20 h-6" />
         </div>
       </div>
       <div class="pt-6 pl-10">
-        <NuxtImg v-if="spriteUrl" :src="spriteUrl" :alt="pokemon.name" />
-        <div v-else>
-          <USkeleton class="w-60 h-60" />
+        <NuxtImg
+          v-if="spriteUrl"
+          v-show="isLoaded"
+          :src="spriteUrl"
+          :alt="pokemon.name"
+          :title="pokemon.name"
+          format="webp"
+          height="500"
+          sizes="100vw sm:100vw md:100vw lg:100px"
+          width="500"
+          :placeholder="[100, 60, 35, 5]"
+          @load="isLoaded = true"
+        />
+        <div>
+          <USkeleton v-show="!isLoaded" class="w-60 h-60" />
         </div>
       </div>
     </div>
 
     <template #footer>
       <div
-
         class="flex flex-wrap w-full justify-end space-x-2 "
       >
         <div
           v-for="ability in pokemon.pokemon_v2_pokemonabilities"
           :key="ability.pokemon_v2_ability.name"
         >
-          <UBadge>
+          <UBadge v-if="isLoaded">
             <span class="capitalize">
-
               {{ ability.pokemon_v2_ability.name }}
             </span>
           </UBadge>
+          <USkeleton v-else class="w-20 h-6" />
         </div>
       </div>
     </template>
