@@ -1,4 +1,7 @@
 <script setup lang="ts">
+htmlAttrs: {
+    lang: 'en'
+  },
 useHead({
   link: [
     {
@@ -7,12 +10,13 @@ useHead({
     },
   ],
 })
+
 useSeoMeta({
-  title: 'Home',
+  title: 'PokemoNuxt',
   description: 'Home page of the Pokemon Nuxt app',
   ogTitle: 'Home',
   ogDescription: 'Home page of the Pokemon Nuxt app',
-
+  ogType: 'website',
   themeColor: '#000000',
   ogUrl: 'https://pokemonuxt.vercel.app/',
   twitterTitle: 'Home',

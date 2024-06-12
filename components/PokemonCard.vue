@@ -146,7 +146,7 @@ const isLoaded = ref(false)
         },
         body: {
           padding: 'py-4',
-          base: 'bgPage'
+          base: 'bgPage',
         },
       }"
   >
