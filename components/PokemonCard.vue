@@ -57,7 +57,12 @@ const totalStats = computed(() => {
 </script>
 
 <template>
-  <UCard>
+  <UCard
+    :ui="
+      {
+        base: 'hover:scale-[.98]  duration-150',
+      }"
+  >
     <template #header>
       <div class="flex flex-col items-center">
         <h2 class="font-bold uppercase text-center">
@@ -70,7 +75,10 @@ const totalStats = computed(() => {
         </div>
       </div>
     </template>
-    <div class="items-center flex justify-center">
+    <div class="items-center relative flex justify-center">
+      <div class="absolute p-2 rounded shadow ring-1 ring-green-200 dark:ring-green-900 bg-primary-100 dark:bg-primary-950 aspect-square right-2  -bottom-6">
+        {{ pokemon.base_experience }} ⭐️
+      </div>
       <NuxtImg v-if="spriteUrl" :src="spriteUrl" :alt="pokemon.name" />
       <div v-else>
         <USkeleton class="w-40 h-40" />
@@ -78,8 +86,6 @@ const totalStats = computed(() => {
     </div>
 
     <template #footer>
-      <p>Base Experience: {{ pokemon.base_experience }}</p>
-
       <p>Stats:</p>
       <ul>
         <li v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">

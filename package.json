@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.0",
+    "@nuxt/fonts": "^0.7.0",
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
     "eslint": "9.4.0",
     "eslint-plugin-format": "^0.1.1",

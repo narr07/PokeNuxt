@@ -3,7 +3,7 @@ export default defineAppConfig({
     primary: 'green',
     gray: 'zinc',
     card: {
-      base: 'hover:scale-[.98]  duration-150',
+      base: '',
       background: 'bg-primary-50  dark:bg-gray-900',
       divide: 'divide-y divide-primary-100 dark:divide-gray-800',
       ring: 'ring-1 hover:ring-primary-300 ring-gray-200 dark:ring-primary-900',

@@ -1,7 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/apollo', '@nuxt/ui', '@nuxt/image', '@nuxt/eslint', 'nuxt-svgo'],
+  modules: [
+    '@nuxtjs/apollo',
+    '@nuxt/ui',
+    '@nuxt/image',
+    '@nuxt/eslint',
+    'nuxt-svgo',
+    '@nuxt/fonts',
+  ],
   apollo: {
     clients: {
       default: {
