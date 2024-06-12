@@ -98,21 +98,39 @@ watch([searchQuery, selectedType], () => {
 onMounted(() => {
   loadPokemons()
 })
+
+function clearSearchQuery() {
+  searchQuery.value = ''
+}
 </script>
 
 <template>
   <div class="bgPage">
     <nav class="fixed top-2 mx-auto w-full z-50">
       <UContainer>
-        <UCard class="">
+        <UCard
+          :ui="{
+            body: {
+              base: ' duration-150',
+              background: '',
+              padding: 'px-2 py-2 sm:p-3',
+            },
+          }"
+        >
           <div class="grid grid-cols-2 gap-4 ">
             <div>
-              <UInput
-                v-model="searchQuery" type="text"
-                icon="i-heroicons-magnifying-glass-20-solid"
-                size="sm"
-                color="gray"
-              />
+              <UButtonGroup size="sm" orientation="horizontal">
+                <UInput
+                  v-model="searchQuery" type="text"
+                  icon="i-heroicons-magnifying-glass-20-solid"
+                  size="sm"
+                  color="gray"
+                />
+                <UButton
+                  icon="i-heroicons-x-mark-16-solid" color="gray"
+                  @click="clearSearchQuery"
+                />
+              </UButtonGroup>
             </div>
             <div>
               <USelectMenu v-model="selectedType" color="gray" :options="types" option-attribute="name">

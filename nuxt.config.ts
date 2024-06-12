@@ -23,9 +23,32 @@ export default defineNuxtConfig({
       'xxl': 1536,
       '2xl': 1536,
     },
-    // domains: ['raw.githubusercontent.com'],
+    domains: ['raw.githubusercontent.com'],
   },
   colorMode: {
     preference: 'dark',
+  },
+  nitro: {
+    prerender: {
+      failOnError: false,
+      crawlLinks: true,
+      routes: [
+        '/',
+      ],
+    },
+  },
+  routeRules: {
+    // Homepage pre-rendered at build time
+    '/': { prerender: true },
+    '/api/**': { cors: true },
+
+  },
+  hooks: {
+    'components:extend': function (components) {
+      for (const comp of components) {
+        if (comp.global)
+          comp.global = 'sync'
+      }
+    },
   },
 })

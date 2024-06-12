@@ -77,15 +77,17 @@ const totalStats = computed(() => {
       </div>
     </div>
 
-    <p>Base Experience: {{ pokemon.base_experience }}</p>
+    <template #footer>
+      <p>Base Experience: {{ pokemon.base_experience }}</p>
 
-    <p>Stats:</p>
-    <ul>
-      <li v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
-        {{ stat.pokemon_v2_stat.name }}: {{ stat.base_stat }}
-      </li>
-    </ul>
-    <p>Total Stats: {{ totalStats }}</p>
-    <p>Abilities: {{ pokemon.pokemon_v2_pokemonabilities.map(ability => ability.pokemon_v2_ability.name).join(', ') }}</p>
+      <p>Stats:</p>
+      <ul>
+        <li v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
+          {{ stat.pokemon_v2_stat.name }}: {{ stat.base_stat }}
+        </li>
+      </ul>
+      <p>Total Stats: {{ totalStats }}</p>
+      <p>Abilities: {{ pokemon.pokemon_v2_pokemonabilities.map(ability => ability.pokemon_v2_ability.name).join(', ') }}</p>
+    </template>
   </UCard>
 </template>
