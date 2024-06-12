@@ -1,8 +1,8 @@
 <script setup lang="ts">
-htmlAttrs: {
-    lang: 'en'
-  },
 useHead({
+  htmlAttrs: {
+    lang: 'en',
+  },
   link: [
     {
       rel: 'canonical',
