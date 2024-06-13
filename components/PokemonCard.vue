@@ -109,24 +109,25 @@ const typeIconMap: Record<string, any> = {
   water: SvgoWater,
 }
 const colorMap: Record<string, string> = {
-  bug: 'green-500',
-  dark: 'gray-800',
-  dragon: 'indigo-400',
-  electric: 'yellow-400',
-  fairy: 'pink-400',
-  fighting: 'red-700',
-  fire: 'red-500',
-  flying: 'sky-300',
-  ghost: 'purple-700',
-  grass: 'green-400',
-  ground: 'yellow-800',
-  ice: 'cyan-300',
-  normal: 'gray-500',
-  poison: 'purple-500',
-  psychic: 'pink-500',
-  rock: 'yellow-700',
-  steel: 'gray-600',
-  water: 'blue-500',
+  bug: '#6B8E23', // OliveDrab
+  dark: '#2F4F4F', // DarkSlateGray
+  dragon: '#4B0082', // Indigo
+  electric: '#FFD700', // Gold
+  fairy: '#FF69B4', // HotPink
+  fighting: '#B22222', // FireBrick
+  fire: '#FF4500', // OrangeRed
+  flying: '#87CEEB', // SkyBlue
+  ghost: '#6A5ACD', // SlateBlue
+  grass: '#32CD32', // LimeGreen
+  ground: '#DEB887', // BurlyWood
+  ice: '#00CED1', // DarkTurquoise
+  normal: '#A9A9A9', // DarkGray
+  poison: '#8A2BE2', // BlueViolet
+  psychic: '#FF1493', // DeepPink
+  rock: '#8B4513', // SaddleBrown
+  steel: '#708090', // SlateGray
+  water: '#1E90FF', // DodgerBlue
+
 }
 
 const isLoaded = ref(false)
@@ -145,7 +146,7 @@ const isLoaded = ref(false)
           padding: 'py-4',
         },
         body: {
-          padding: 'py-4',
+          padding: 'py-6 sm:py-6',
           base: 'bgPage',
         },
       }"
@@ -159,7 +160,7 @@ const isLoaded = ref(false)
           <div class="flex space-x-2">
             <div v-for="type in pokemon.pokemon_v2_pokemontypes" :key="type.pokemon_v2_type.name">
               <UTooltip :popper="{ arrow: true }" :text="type.pokemon_v2_type.name">
-                <div class="flex items-center p-1 aspect-square w-8 h-8 ring-1 ring-gray-300 dark:ring-gray-800 justify-center  rounded" :class="[`bg-${colorMap[type.pokemon_v2_type.name]}`]">
+                <div class="flex items-center p-1 aspect-square w-8 h-8 ring-1 ring-gray-300 dark:ring-gray-800 justify-center  rounded" :style="{ backgroundColor: colorMap[type.pokemon_v2_type.name] }">
                   <component :is="typeIconMap[type.pokemon_v2_type.name]" v-if="isLoaded" class="text-2xl text-gray-950 inline-block" />
                   <USkeleton v-else class="w-6 h-6" />
                 </div>
@@ -179,12 +180,12 @@ const isLoaded = ref(false)
         </div>
         <USkeleton v-else class="w-20 h-6" />
       </div>
-      <div class="flex absolute space-y-3 flex-col w-full justify-center">
+      <div class="flex absolute space-y-2 flex-col w-full justify-center">
         <div v-for="stat in pokemon.pokemon_v2_pokemonstats" :key="stat.pokemon_v2_stat.name">
-          <UTooltip v-if="isLoaded" :popper="{ arrow: true }" :text="stat.pokemon_v2_stat.name">
-            <UChip size="xl" :text="stat.base_stat">
-              <UButton padded size="xs" color="gray" variant="solid" square>
-                <component :is="statIconMap[stat.pokemon_v2_stat.name]" v-if="isLoaded" class="text-xl " />
+          <UTooltip v-if="isLoaded" :popper="{ arrow: true, placement: 'right' }" :text="stat.pokemon_v2_stat.name">
+            <UChip size="lg" :text="stat.base_stat">
+              <UButton padded size="2xs" color="gray" variant="solid">
+                <component :is="statIconMap[stat.pokemon_v2_stat.name]" v-if="isLoaded" class="text-[22px] " />
                 <USkeleton v-else class="w-6 h-6" />
               </UButton>
             </UChip>
@@ -196,9 +197,11 @@ const isLoaded = ref(false)
         <NuxtImg
           v-if="spriteUrl"
           v-show="isLoaded"
+          class="w-48 h-48"
           :src="spriteUrl"
           :alt="pokemon.name"
           :title="pokemon.name"
+          loading="lazy"
           format="webp"
           height="500"
           sizes="100vw sm:100vw md:100vw lg:100px"

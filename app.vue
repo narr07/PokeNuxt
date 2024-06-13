@@ -23,10 +23,10 @@ useSeoMeta({
   twitterDescription: 'Home page of the Pokemon Nuxt app',
 
 })
-defineOgImageComponent('Nuxt', {
+defineOgImageComponent('Default', {
   headline: 'Nuxt Pokemon Web App',
   title: 'Pokemon Nuxt',
-  description: 'List all Pokemon with Nuxt',
+  description: 'List all Pokemon With Nuxt',
 })
 </script>
 

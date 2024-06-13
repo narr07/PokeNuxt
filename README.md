@@ -1,20 +1,34 @@
-# Nuxt 3 Minimal Starter
+# Pokemon Nuxt
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+![Pokemon Nuxt](https://pokemonuxt.vercel.app/__og-image__/image/og.png)
+
+## Tech
+
+This project uses the following modules and technologies:
+
+- [Nuxt 3](https://nuxt.com/docs/getting-started/introduction)
+- [@nuxt/fonts](https://fonts.nuxtjs.org/)
+- [@nuxt/ui](https://ui.nuxtjs.org/)
+- [@nuxt/image](https://image.nuxtjs.org/)
+- [@nuxt/eslint](https://eslint.nuxtjs.org/)
+- [@nuxtjs/apollo](https://github.com/nuxt-modules/apollo)
+- [nuxt-svgo](https://github.com/cpsoinos/nuxt-svgo)
+- [nuxt-og-image](https://github.com/nuxt-modules/og-image)
+- [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/)
+
+## Rest API
+
+This project uses the [PokéAPI](https://pokeapi.co/) to fetch Pokémon data.
 
 ## Setup
+
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 Make sure to install the dependencies:
 
 ```bash
 # npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
 
 # bun
 bun install
@@ -28,48 +42,8 @@ Start the development server on `http://localhost:3000`:
 # npm
 npm run dev
 
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
 # bun
 bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

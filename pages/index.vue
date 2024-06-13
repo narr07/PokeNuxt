@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useFetch } from 'nuxt/app'
 import PokemonCard from '@/components/PokemonCard.vue'
 
 interface PokemonType {
@@ -20,10 +21,9 @@ interface Pokemon {
 const page = ref(1)
 const lastPage = ref(1)
 const pokemons = ref<Pokemon[]>([])
-const pending = ref(false)
-const error = ref<any>(null)
 const searchQuery = ref('')
 const selectedType = ref('')
+const isLoading = ref(false) // Tambahkan properti isLoading
 
 const types = [
   '',
@@ -52,30 +52,29 @@ const displaySelectedType = computed(() => {
 })
 
 async function loadPokemons(reset = false) {
-  pending.value = true
+  isLoading.value = true // Set isLoading to true when loading starts
   if (reset) {
     pokemons.value = []
     page.value = 1
   }
 
-  try {
-    const response = await $fetch('/api/pokemons', {
-      params: {
-        page: page.value,
-        searchQuery: searchQuery.value,
-        selectedType: selectedType.value,
-      },
-    })
+  const { data, error } = await useFetch('/api/pokemons', {
+    params: {
+      page: page.value,
+      searchQuery: searchQuery.value,
+      selectedType: selectedType.value,
+    },
+  })
 
-    appendPokemons(response.pokemons)
-    lastPage.value = response.lastPage
+  if (error.value) {
+    console.error(error.value)
+    isLoading.value = false // Set isLoading to false if there is an error
+    return
   }
-  catch (err) {
-    error.value = err
-  }
-  finally {
-    pending.value = false
-  }
+
+  appendPokemons(data.value.pokemons)
+  lastPage.value = data.value.lastPage
+  isLoading.value = false // Set isLoading to false when loading is complete
 }
 
 function appendPokemons(newPokemons: Pokemon[]) {
@@ -95,9 +94,8 @@ watch([searchQuery, selectedType], () => {
   loadPokemons(true)
 })
 
-onMounted(() => {
-  loadPokemons()
-})
+// Load initial data
+loadPokemons()
 
 function clearSearchQuery() {
   searchQuery.value = ''
@@ -154,29 +152,23 @@ function clearSearchQuery() {
       </div>
       <div class="mb-4" />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id" :pokemon="pokemon" />
-        <template v-if="pending">
-          <div v-for="n in 6" :key="n" class="flex flex-col space-y-2">
-            <div class="flex flex-col items-center">
-              <USkeleton class="w-24 h-24 rounded-full" />
-              <div class="mt-2 text-center">
-                <USkeleton class="h-4 w-32" />
-                <USkeleton class="h-4 w-20 mt-1" />
-              </div>
-            </div>
-            <USkeleton class="h-4 w-full mt-2" />
-            <USkeleton class="h-4 w-full" />
-            <USkeleton class="h-4 w-full mt-2" />
-            <div class="flex flex-col space-y-1">
-              <USkeleton class="h-4 w-full" />
-              <USkeleton class="h-4 w-full" />
-              <USkeleton class="h-4 w-full" />
-            </div>
-          </div>
-        </template>
+        <PokemonCard
+          v-for="pokemon in pokemons"
+          :key="pokemon.id"
+          data-aos="zoom-in"
+          data-aos-delay="50"
+          data-aos-duration="200"
+          :pokemon="pokemon"
+        />
       </div>
       <div class="py-10 justify-center flex max-w-6xl mx-auto">
-        <UButton v-if="!pending && page < lastPage" label="  Load More" @click="loadMore" />
+        <UButton
+          v-if="page < lastPage"
+          :loading="isLoading"
+          @click="loadMore"
+        >
+          Load More
+        </UButton>
       </div>
     </UContainer>
   </div>
